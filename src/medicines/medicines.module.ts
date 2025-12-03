@@ -4,12 +4,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Medicine, MedicineSchema } from 'src/schemas/medicine.schema';
 import { MedicinesService } from './medicines.service';
 import { MedicinesController } from './medicines.controller';
-
+import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Medicine.name, schema: MedicineSchema },
     ]),
+    HttpModule,
   ],
   providers: [MedicinesService],
   controllers: [MedicinesController],
