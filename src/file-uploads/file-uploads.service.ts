@@ -3,7 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FileUploadDocument, FileUpload } from 'src/schemas/file-upload.schema';
-
+import * as fs from 'fs-extra';
+import { NotFoundException } from '@nestjs/common';
 @Injectable()
 export class FileUploadsService {
   constructor(
@@ -29,7 +30,26 @@ export class FileUploadsService {
     return this.fileUploadModel.find({ visit: visitId }).exec();
   }
 
+  // async remove(id: string): Promise<FileUploadDocument | null> {
+  //   return this.fileUploadModel.findByIdAndDelete(id).exec();
+  // }
   async remove(id: string): Promise<FileUploadDocument | null> {
+    const fileRecord = await this.fileUploadModel.findById(id).exec();
+    if (!fileRecord) {
+      throw new NotFoundException(`File with id ${id} not found`);
+    }
+
+    // Remove file from disk
+    try {
+      if (fileRecord.filePath) {
+        await fs.remove(fileRecord.filePath);
+      }
+    } catch (error) {
+      console.error(`Failed to delete file from disk: ${error.message}`);
+      // continue to remove DB record even if file deletion fails
+    }
+
+    // Remove DB record
     return this.fileUploadModel.findByIdAndDelete(id).exec();
   }
 }
