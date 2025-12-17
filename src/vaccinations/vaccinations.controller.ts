@@ -31,7 +31,7 @@ export class VaccinationsController {
   constructor(private readonly vaccinationsService: VaccinationsService) {}
 
   @Post()
-  @Roles('Admin','Nurse')
+  @Roles('Admin', 'Nurse', 'Doctor')
   @ApiOperation({ summary: 'Create vaccination record' })
   @ApiResponse({ status: 201, description: 'Vaccination created' })
   create(@Body() createVaccinationDto: CreateVaccinationDto, @Request() req) {
@@ -58,7 +58,7 @@ export class VaccinationsController {
   }
 
   @Put(':id')
-  @Roles('Nurse')
+  @Roles('Nurse', 'Doctor')
   @ApiOperation({ summary: 'Update vaccination by ID' })
   @ApiResponse({ status: 200, description: 'Vaccination updated' })
   update(
