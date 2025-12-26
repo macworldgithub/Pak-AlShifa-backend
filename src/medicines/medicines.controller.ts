@@ -130,7 +130,7 @@ export class MedicinesController {
     return this.medicinesService.getAllConcepts(search);
   }
   @Get('common')
-  @Roles('Doctor', 'Pharmacist', 'Admin')
+  @Roles('Receptionist', 'Nurse', 'Doctor', 'Admin')
   @ApiOperation({ summary: 'Get most commonly prescribed medicines' })
   @ApiResponse({
     status: 200,

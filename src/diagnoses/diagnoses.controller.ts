@@ -40,7 +40,7 @@ export class DiagnosesController {
     return this.diagnosesService.searchDiseases(search);
   }
   @Get('common')
-  @Roles('Doctor', 'Admin')
+  @Roles('Receptionist', 'Nurse', 'Doctor', 'Admin')
   @ApiOperation({ summary: 'Get common diagnoses' })
   @ApiResponse({ status: 200, description: 'Common diagnoses' })
   getCommon() {
